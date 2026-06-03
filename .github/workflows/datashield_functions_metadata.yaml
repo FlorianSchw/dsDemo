@@ -30,7 +30,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::tidyverse, any::here, any::jsonlite
+          extra-packages: any::tidyverse, any::here, any::jsonlite, any::desc
           needs: check
 
       - name: Execute Files
