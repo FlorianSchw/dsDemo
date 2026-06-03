@@ -14,13 +14,11 @@ jobs:
       - name: Checking out repo
         uses: actions/checkout@v6
 
-
       - name: Checking out repo with reusable workflow
         uses: actions/checkout@v6
         with:
           repository: FlorianSchw/dsDemo
-          path: workflow
-
+          path: datashield-metadata-workflow
 
       - uses: r-lib/actions/setup-r@v2
 
@@ -29,18 +27,13 @@ jobs:
           extra-packages: any::tidyverse, any::here, any::jsonlite, any::desc
           needs: check
 
-      - name: Test the pathing of the runner
-        run: |
-          echo ${{ github.workspace }}
-          echo $GITHUB_WORKSPACE
-
       - name: Execute Files
         run: |
-          source("workflow/R/metadata_extraction.R")
+          source("datashield-metadata-workflow/R/metadata_extraction.R")
         shell: Rscript {0}
 
-      - name: Remove workflow files
-        run: git rm --cached workflow
+      - name: Remove datashield-metadata-workflow files
+        run: rm -rf datashield-metadata-workflow
 
       - name: Verify changes in the data sub-directory
         uses: tj-actions/verify-changed-files@a1c6acee9df209257a246f2cc6ae8cb6581c1edf # v20
