@@ -3,6 +3,9 @@ name: pushing datashield metadata information to central repository
 on:
   workflow_call:
 
+env:
+  API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+
 jobs:
   Copy_Metadata:
     runs-on: ubuntu-latest
