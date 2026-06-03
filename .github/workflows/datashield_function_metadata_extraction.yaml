@@ -43,7 +43,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v20.0.4 # v20
         id: verify-changed-files
         with:
-          files: *functions_metadata.json
+          files: "*functions_metadata.json"
 
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
