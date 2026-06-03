@@ -51,8 +51,8 @@ datashield_functions <-  as_tibble(list.files(path = "R")) |>
                                    TRUE ~ NA_character_)) |>
 
   filter_out(is.na(information_type) & is.na(assign_type) & is.na(aggregate_type)) |>
-  mutate(information_type = case_when(is.na(information_type) & is.na(assign_type) ~ "aggregate",
-                                      is.na(information_type) & is.na(aggregate_type) ~ "assign",
+  mutate(information_type = case_when(is.na(information_type) & is.na(assign_type) ~ "aggregate_info",
+                                      is.na(information_type) & is.na(aggregate_type) ~ "assign_info",
                                       TRUE ~ information_type)) |>
   select(-c(assign_type, aggregate_type)) |>
   rowwise() |>
@@ -66,14 +66,14 @@ datashield_functions <-  as_tibble(list.files(path = "R")) |>
                                                                                                                string = codeline_list,
                                                                                                                replacement = ""),
                                          information_type == "export" ~ "export",
-                                         information_type == "assign" ~ "assign",
-                                         information_type == "aggregate" ~ "aggregate")) |>
+                                         information_type == "assign_info" ~ "assign",
+                                         information_type == "aggregate_info" ~ "aggregate")) |>
   select(-codeline_list) |>
   pivot_wider(names_from = information_type,
               values_from = information_content) |>
-  mutate(function_type = case_when(assign == "assign" & aggregate == "aggregate" ~ "hybrid",
-                                   assign == "assign" ~ "assign",
-                                   aggregate == "aggregate" ~ "aggregate",
+  mutate(function_type = case_when(assign_info == "assign" & aggregate_info == "aggregate" ~ "hybrid",
+                                   assign_info == "assign" ~ "assign",
+                                   aggregate_info == "aggregate" ~ "aggregate",
                                    TRUE ~ "other"),
          architecture_type = case_when(architecture_name == "client" & export == "export" ~ "client",
                                        architecture_name == "client" & is.na(export) ~ "client (no export)",
@@ -85,7 +85,7 @@ datashield_functions <-  as_tibble(list.files(path = "R")) |>
   rowwise() |>
   mutate(test_file = stringr::str_detect(pattern = function_name,
                                          string = paste(test_files,collapse = ", "))) |>
-  select(-c(assign, aggregate,  architecture_name))
+  select(-c(assign_info, aggregate_info,  architecture_name))
 
 datashield_functions <- datashield_functions |>
   add_column(!!!expected_columns[!names(expected_columns) %in% colnames(datashield_functions)]) |>
