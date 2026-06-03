@@ -33,7 +33,9 @@ datashield_functions <-  as_tibble(list.files(path = "R")) |>
   pivot_wider(names_from = information_type,
               values_from = information_content)
 
-
+jsonlite::write_json(x = datashield_functions,
+                     path = "functions_metadata.json",
+                     pretty = TRUE)
 
 
 
